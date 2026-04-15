@@ -1,7 +1,4 @@
-#include "../include/parser_structures.h"
-#include "../include/parser_parse.h"
-#include "../include/parser_cleanup.h"
-#include "../include/parser_print_tree.h"
+#include "../include/parser.h"
 
 int main(int argc, char* argv[])
 {
