@@ -1,0 +1,15 @@
+"abcd" "abcd"
+"ab.d" "abcd"
+"a*b" "aaaaaaab"
+"a*ab" "aaab"
+"a*b" "b"
+"a*ab" "ab"
+"abc|def" "def"
+"(ab|c*(g|e))*" "abcccgcceabgabe"
+"(ab|c*(g|e))*" "abcccgccabeabgabe"
+"(a|)" ""
+
+
+
+
+
