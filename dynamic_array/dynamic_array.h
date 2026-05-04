@@ -23,7 +23,7 @@
         int capacity; \
     } label; \
     \
-    void label##_append(label* arr, type value) \
+    static inline void label##_append(label* arr, type value) \
     { \
         if (arr->size >= arr->capacity) \
         { \
@@ -37,7 +37,7 @@
         arr->data[(arr->size)++] = value; \
     } \
     \
-    label* label##_init(int capacity) \
+    static inline label* label##_init(int capacity) \
     { \
         label* template = malloc( sizeof(label) ); \
         if (!template) \
@@ -52,6 +52,17 @@
             fprintf(stderr, "In dynamic_array.h._init: Failed to malloc the template->data\n"); \
         } \
         return template; \
+    } \
+    \
+    static inline void label##_free(label* arr) \
+    { \
+        free(arr->data); \
+        free(arr); \
+    } \
+    \
+    static inline void label##_pop(label* arr) \
+    {  \
+        (arr->size)--; \
     } \
 
 

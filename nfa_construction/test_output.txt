@@ -1,0 +1,171 @@
+Processing: a
+Number of nodes created = 2
+SOURCE NODE = 0
+
+Edge goes from node 0 to node 1 -- edge spelling = a
+Finishing node = 1
+
+
+Processing: 
+Number of nodes created = 2
+SOURCE NODE = 0
+
+Edge goes from node 0 to node 1 -- edge spelling = 
+Finishing node = 1
+
+
+Processing: a|b
+Number of nodes created = 6
+SOURCE NODE = 4
+
+Edge goes from node 4 to node 0 -- edge spelling = 
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 5 -- edge spelling = 
+Edge goes from node 4 to node 2 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = b
+Edge goes from node 3 to node 5 -- edge spelling = 
+Finishing node = 5
+
+
+Processing: a*
+Number of nodes created = 4
+SOURCE NODE = 2
+
+Edge goes from node 2 to node 0 -- edge spelling = 
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 0 -- edge spelling = 
+Edge goes from node 1 to node 3 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = 
+Finishing node = 3
+
+
+Processing: (a)
+Number of nodes created = 2
+SOURCE NODE = 0
+
+Edge goes from node 0 to node 1 -- edge spelling = a
+Finishing node = 1
+
+
+Processing: ab
+Number of nodes created = 5
+SOURCE NODE = 0
+
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 4 -- edge spelling = 
+Edge goes from node 4 to node 2 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = b
+Finishing node = 3
+
+
+Processing: a|b*
+Number of nodes created = 8
+SOURCE NODE = 6
+
+Edge goes from node 6 to node 0 -- edge spelling = 
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 7 -- edge spelling = 
+Edge goes from node 6 to node 4 -- edge spelling = 
+Edge goes from node 4 to node 2 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = b
+Edge goes from node 3 to node 2 -- edge spelling = 
+Edge goes from node 3 to node 5 -- edge spelling = 
+Edge goes from node 5 to node 7 -- edge spelling = 
+Edge goes from node 4 to node 5 -- edge spelling = 
+Finishing node = 7
+
+
+Processing: ab|cd
+Number of nodes created = 12
+SOURCE NODE = 10
+
+Edge goes from node 10 to node 0 -- edge spelling = 
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 4 -- edge spelling = 
+Edge goes from node 4 to node 2 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = b
+Edge goes from node 3 to node 11 -- edge spelling = 
+Edge goes from node 10 to node 5 -- edge spelling = 
+Edge goes from node 5 to node 6 -- edge spelling = c
+Edge goes from node 6 to node 9 -- edge spelling = 
+Edge goes from node 9 to node 7 -- edge spelling = 
+Edge goes from node 7 to node 8 -- edge spelling = d
+Edge goes from node 8 to node 11 -- edge spelling = 
+Finishing node = 11
+
+
+Processing: a*b*c*
+Number of nodes created = 14
+SOURCE NODE = 2
+
+Edge goes from node 2 to node 0 -- edge spelling = 
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 0 -- edge spelling = 
+Edge goes from node 1 to node 3 -- edge spelling = 
+Edge goes from node 3 to node 13 -- edge spelling = 
+Edge goes from node 13 to node 6 -- edge spelling = 
+Edge goes from node 6 to node 4 -- edge spelling = 
+Edge goes from node 4 to node 5 -- edge spelling = b
+Edge goes from node 5 to node 4 -- edge spelling = 
+Edge goes from node 5 to node 7 -- edge spelling = 
+Edge goes from node 7 to node 12 -- edge spelling = 
+Edge goes from node 12 to node 10 -- edge spelling = 
+Edge goes from node 10 to node 8 -- edge spelling = 
+Edge goes from node 8 to node 9 -- edge spelling = c
+Edge goes from node 9 to node 8 -- edge spelling = 
+Edge goes from node 9 to node 11 -- edge spelling = 
+Edge goes from node 10 to node 11 -- edge spelling = 
+Edge goes from node 6 to node 7 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = 
+Finishing node = 11
+
+
+Processing: (ab)*
+Number of nodes created = 7
+SOURCE NODE = 5
+
+Edge goes from node 5 to node 0 -- edge spelling = 
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 4 -- edge spelling = 
+Edge goes from node 4 to node 2 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = b
+Edge goes from node 3 to node 0 -- edge spelling = 
+Edge goes from node 3 to node 6 -- edge spelling = 
+Edge goes from node 5 to node 6 -- edge spelling = 
+Finishing node = 6
+
+
+Processing: ab|(cde)*|(fg)
+Number of nodes created = 24
+SOURCE NODE = 22
+
+Edge goes from node 22 to node 0 -- edge spelling = 
+Edge goes from node 0 to node 1 -- edge spelling = a
+Edge goes from node 1 to node 4 -- edge spelling = 
+Edge goes from node 4 to node 2 -- edge spelling = 
+Edge goes from node 2 to node 3 -- edge spelling = b
+Edge goes from node 3 to node 23 -- edge spelling = 
+Edge goes from node 22 to node 20 -- edge spelling = 
+Edge goes from node 20 to node 13 -- edge spelling = 
+Edge goes from node 13 to node 5 -- edge spelling = 
+Edge goes from node 5 to node 6 -- edge spelling = c
+Edge goes from node 6 to node 12 -- edge spelling = 
+Edge goes from node 12 to node 7 -- edge spelling = 
+Edge goes from node 7 to node 8 -- edge spelling = d
+Edge goes from node 8 to node 11 -- edge spelling = 
+Edge goes from node 11 to node 9 -- edge spelling = 
+Edge goes from node 9 to node 10 -- edge spelling = e
+Edge goes from node 10 to node 5 -- edge spelling = 
+Edge goes from node 10 to node 14 -- edge spelling = 
+Edge goes from node 14 to node 21 -- edge spelling = 
+Edge goes from node 21 to node 23 -- edge spelling = 
+Edge goes from node 13 to node 14 -- edge spelling = 
+Edge goes from node 20 to node 15 -- edge spelling = 
+Edge goes from node 15 to node 16 -- edge spelling = f
+Edge goes from node 16 to node 19 -- edge spelling = 
+Edge goes from node 19 to node 17 -- edge spelling = 
+Edge goes from node 17 to node 18 -- edge spelling = g
+Edge goes from node 18 to node 21 -- edge spelling = 
+Finishing node = 23
+
+

@@ -1,3 +1,7 @@
+#ifndef PARSER_H
+#define PARSER_H
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -58,3 +62,5 @@ void print_expr(Expr* expr, int generation);
 
 // Clean up 
 void free_expr(Expr* expr);
+
+#endif
