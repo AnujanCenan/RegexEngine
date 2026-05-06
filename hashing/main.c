@@ -79,7 +79,9 @@ Zobrist* zobrist_init(int upper_bound)
 int find_next_available(int start, Zobrist* zobrist)
 {
     int num_collisions = 0;
-    for (int i = start; i < zobrist->capacity; ++i)
+
+    int i = start;
+    for (int count = 0; count < zobrist->capacity; ++count)
     {
         if (zobrist->ht[i] == NULL || zobrist->ht[i]->tombsone)
         {
@@ -88,17 +90,7 @@ int find_next_available(int start, Zobrist* zobrist)
         }
 
         ++num_collisions;   
-    }
-
-    for (int i = 0; i < start; ++i)
-    {
-        if (zobrist->ht[i] == NULL || zobrist->ht[i]->tombsone)
-        {
-            printf("\tNumber of collisions: %d\n", num_collisions);
-            return i;
-        }
-
-        ++num_collisions;
+        ++i;
     }
 
     fprintf(stderr, "Hashing::find_next_available: No way, ran out of space :(\n");
@@ -164,38 +156,24 @@ bool sets_match(Set* s1, Set* s2)
 bool find_set(Zobrist* zobrist, Set* s, int start)
 {
     int num_misses = 0;
-    for (int i = start; i < zobrist->capacity; ++i)
+
+    int i = start;
+    for (int count = 0; count < zobrist->capacity; ++count)
     {
-        if (zobrist->ht[i] == NULL)
-        {
-            return false;
-        } 
+
+        if (i == zobrist->capacity) i = 0;
+
+        if (zobrist->ht[i] == NULL) return false;
+
 
         if (!zobrist->ht[i]->tombsone && sets_match(s, zobrist->ht[i]->set))
         {
             printf("\tNumber of misses = %d\n", num_misses);
             return true;
-        } else 
-        {
-            num_misses++;
         }
-    }
 
-    for (int i = 0; i < start; ++i)
-    {
-        if (zobrist->ht[i] == NULL)
-        {
-            return false;
-        } 
-
-        if (!zobrist->ht[i]->tombsone && sets_match(s, zobrist->ht[i]->set))
-        {
-            printf("\tNumber of misses = %d\n", num_misses);
-            return true;
-        } else 
-        {
-            num_misses++;
-        }
+        ++num_misses;
+        ++i;
     }
 
     return false;
