@@ -1,0 +1,11 @@
+a
+
+a|b
+a*
+(a)
+ab
+a|b*
+ab|cd
+a*b*c*
+(ab)*
+ab|(cde)*|(fg)
