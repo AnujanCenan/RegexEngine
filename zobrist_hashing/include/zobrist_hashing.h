@@ -7,7 +7,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-#include "../../hash_set/include/primitive.h"
+#include "hash_set_integer.h"
 
 #define HT_SIZE 1024
 
