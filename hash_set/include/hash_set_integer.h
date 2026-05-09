@@ -1,5 +1,5 @@
-#ifndef PRIMITIVE_H
-#define PRIMITIVE_H
+#ifndef HASH_SET_INTEGER_H
+#define HASH_SET_INTEGER_H
 
 #include <stdio.h>
 #include <stdlib.h>
