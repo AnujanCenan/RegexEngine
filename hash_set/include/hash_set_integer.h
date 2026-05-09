@@ -1,3 +1,6 @@
+#ifndef PRIMITIVE_H
+#define PRIMITIVE_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -40,4 +43,7 @@ void hash_set_free(Hash_Set* hs);
 bool hash_sets_equal(Hash_Set* hs1, Hash_Set* hs2);
 
 HS_Iterable* hash_set_get_iterable(Hash_Set* hs);
+void print_iterable(HS_Iterable* iter);
 void hash_set_iterable_free(HS_Iterable* iter);
+
+#endif

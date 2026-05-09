@@ -1,4 +1,4 @@
-#include "../include/primitive.h"
+#include "../include/hash_set_integer.h"
 
 Hash_Set* hash_set_resize(Hash_Set* hs);
 int hs_hash(int key);
