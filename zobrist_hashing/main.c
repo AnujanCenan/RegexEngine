@@ -5,6 +5,8 @@
 #include <stdbool.h>
 
 #include "../dynamic_array/dynamic_array.h"
+#include "../hash_set/include/primitive.h"
+
 // Goals:
 
 // struct for the hash table
@@ -22,7 +24,8 @@
 // For now assume resizing will not be necessary
 
 // SETS need to be sorted for this to work (comparison is done linearly)
-DECLARE_DYNAMIC_ARRAY(int, Set);
+
+typedef Hash_Set Set;
 
 #define HT_SIZE 1024
 
@@ -85,7 +88,6 @@ int find_next_available(int start, Zobrist* zobrist)
     {
         if (zobrist->ht[i] == NULL || zobrist->ht[i]->tombsone)
         {
-            printf("\tNumber of collisions: %d\n", num_collisions);
             return i;
         }
 
@@ -101,9 +103,10 @@ int find_next_available(int start, Zobrist* zobrist)
 uint64_t zobrist_hash(Zobrist* zobrist, Set* s)
 {
     uint64_t h = 0;
-    for (int i = 0; i < s->size; ++i)
+    HS_Iterable* iter = hash_set_get_iterable(s);
+    for (int i = 0; i < iter->size; ++i)
     {
-        int curr_element = s->data[i];
+        int curr_element = iter->iterable[i];
         if (curr_element > zobrist->upper_bound)
         {
             fprintf(stderr, "Hashing::zobrist_add: Element %d in set is larger than the Zobrist upper bound\n", curr_element);
@@ -113,6 +116,8 @@ uint64_t zobrist_hash(Zobrist* zobrist, Set* s)
         h ^= zobrist->random_key_table[curr_element];
     }
 
+    hash_set_iterable_free(iter);
+
     return h;
 }
 
@@ -121,7 +126,6 @@ void zobrist_add(Zobrist* zobrist, Set* s)
     uint64_t h = zobrist_hash(zobrist, s);
 
     int index = (int) (h & (zobrist->capacity - 1));
-    printf("Pushing next set:\n");
     index = find_next_available(index, zobrist);
     
     Zobrist_Element* elmt = malloc(sizeof(Zobrist_Element));
@@ -130,26 +134,6 @@ void zobrist_add(Zobrist* zobrist, Set* s)
 
     zobrist->ht[index] = elmt;
     zobrist->num_elements++;
-}
-
-// private
-bool sets_match(Set* s1, Set* s2)
-{
-    if (s1 == NULL || s2 == NULL)
-    {
-        printf("Hashing::sets_match: (WARNING) - either s1 or s2 is NULL; unadvisable to use the NULL set for this\n");
-        return false;
-    }
-
-    if (s1->size != s2->size) return false;
-
-
-    for (int i = 0; i < s1->size; ++i)
-    {
-        if (s1->data[i] != s2->data[i]) return false;
-    }
-
-    return true;
 }
 
 // private
@@ -165,10 +149,8 @@ bool find_set(Zobrist* zobrist, Set* s, int start)
 
         if (zobrist->ht[i] == NULL) return false;
 
-
-        if (!zobrist->ht[i]->tombsone && sets_match(s, zobrist->ht[i]->set))
+        if (!zobrist->ht[i]->tombsone && hash_sets_equal(s, zobrist->ht[i]->set))
         {
-            printf("\tNumber of misses = %d\n", num_misses);
             return true;
         }
 
@@ -190,7 +172,21 @@ bool zobrist_exists(Zobrist* zobrist, Set* s)
     else printf("Not Found\n");
 
     return result;
+}
 
+
+void zobrist_free(Zobrist* z)
+{
+    free(z->random_key_table);
+
+    for (int i = 0; i < z->capacity; ++i)
+    {
+        if (z->ht[i] == NULL) continue;
+        hash_set_free(z->ht[i]->set);
+    }
+
+    free(z->ht);
+    free(z);
 }
 
 int main()
@@ -199,31 +195,31 @@ int main()
     // Ensure Set is always sorted (in order for comparison to be more efficient)
 
 
-    Set* s1 = Set_init(8);
-    Set_append(s1, 1);
-    Set_append(s1, 3);
-    Set_append(s1, 5);
-    Set_append(s1, 6);
-    Set_append(s1, 8);
-    Set_append(s1, 11);
+    Set* s1 = hash_set_init();
+    hash_set_add(&s1, 1);
+    hash_set_add(&s1, 3);
+    hash_set_add(&s1, 5);
+    hash_set_add(&s1, 6);
+    hash_set_add(&s1, 8);
+    hash_set_add(&s1, 11);
 
-    Set* s2 = Set_init(8);
-    Set_append(s2, 5);
-    Set_append(s2, 12);
-    Set_append(s2, 13);
-    Set_append(s2, 14);
-    Set_append(s2, 22);
-    Set_append(s2, 24);
-    Set_append(s2, 26);
+    Set* s2 = hash_set_init();
+    hash_set_add(&s2, 5);
+    hash_set_add(&s2, 12);
+    hash_set_add(&s2, 13);
+    hash_set_add(&s2, 14);
+    hash_set_add(&s2, 22);
+    hash_set_add(&s2, 24);
+    hash_set_add(&s2, 26);
 
-    Set* s3 = Set_init(8);
-    Set_append(s3, 211);
-    Set_append(s3, 312);
-    Set_append(s3, 332);
-    Set_append(s3, 340);
-    Set_append(s3, 341);
-    Set_append(s3, 342);
-    Set_append(s3, 350);
+    Set* s3 = hash_set_init();
+    hash_set_add(&s3, 211);
+    hash_set_add(&s3, 312);
+    hash_set_add(&s3, 332);
+    hash_set_add(&s3, 340);
+    hash_set_add(&s3, 341);
+    hash_set_add(&s3, 342);
+    hash_set_add(&s3, 350);
 
     Zobrist* z = zobrist_init(350);
     zobrist_add(z, s1);
@@ -234,30 +230,32 @@ int main()
     zobrist_exists(z, s2);      // Found!
     zobrist_exists(z, s3);      // Found!
 
-    Set* s4 = Set_init(6);
-    Set_append(s4, 8);
-    Set_append(s4, 12);
-    Set_append(s4, 15);
-    Set_append(s4, 33);
-    Set_append(s4, 34);
-    Set_append(s4, 35);
-    Set_append(s4, 37);
+    Set* s4 = hash_set_init();
+    hash_set_add(&s4, 8);
+    hash_set_add(&s4, 12);
+    hash_set_add(&s4, 15);
+    hash_set_add(&s4, 33);
+    hash_set_add(&s4, 34);
+    hash_set_add(&s4, 35);
+    hash_set_add(&s4, 37);
 
     zobrist_exists(z, s4);      // Not found
 
-    Set* s5 = Set_init(8);
-    Set_append(s5, 211);
-    Set_append(s5, 312);
-    Set_append(s5, 332);
-    Set_append(s5, 340);
-    Set_append(s5, 341);
-    Set_append(s5, 342);
-    Set_append(s5, 350);
+    Set* s5 = hash_set_init();      // will match s3
+    hash_set_add(&s5, 211);
+    hash_set_add(&s5, 312);
+    hash_set_add(&s5, 332);
+    hash_set_add(&s5, 340);
+    hash_set_add(&s5, 341);
+    hash_set_add(&s5, 342);
+    hash_set_add(&s5, 350);
 
     zobrist_exists(z, s5);      // Found!
 
 
     printf("Num elmts in zobrist = %d\n", z->num_elements);
+
+    zobrist_free(z);
 
     return 0;
 }

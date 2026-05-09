@@ -167,6 +167,24 @@ void hash_set_delete(Hash_Set* hs, int key)
     return;
 }
 
+bool hash_sets_equal(Hash_Set* hs1, Hash_Set* hs2)
+{
+    HS_Iterable* iter1 = hash_set_get_iterable(hs1);
+
+    HS_Iterable* iter2 = hash_set_get_iterable(hs2);
+
+    if (iter1->size != iter2->size) return false;
+
+    for (int i = 0; i < iter1->size; ++i)
+    {
+        if (!hash_set_exists(hs2, iter1->iterable[i])) return false;
+        if (!hash_set_exists(hs1, iter2->iterable[i])) return false;
+    }
+
+    return true;
+}
+
+
 HS_Iterable* hash_set_get_iterable(Hash_Set* hs)
 {
     HS_Iterable* iter = malloc(sizeof(HS_Iterable));
@@ -213,7 +231,7 @@ void hash_set_free(Hash_Set* hs)
     free(hs);
 }
 
-void iterable_free(HS_Iterable* iter)
+void hash_set_iterable_free(HS_Iterable* iter)
 {
     free(iter->iterable);
     free(iter);

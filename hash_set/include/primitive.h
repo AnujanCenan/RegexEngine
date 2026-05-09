@@ -37,6 +37,7 @@ void hash_set_add(Hash_Set** hs, int key);
 bool hash_set_exists(Hash_Set* hs, int key);
 void hash_set_delete(Hash_Set* hs, int key);
 void hash_set_free(Hash_Set* hs);
+bool hash_sets_equal(Hash_Set* hs1, Hash_Set* hs2);
 
 HS_Iterable* hash_set_get_iterable(Hash_Set* hs);
-void iterable_free(HS_Iterable* iter);
+void hash_set_iterable_free(HS_Iterable* iter);
