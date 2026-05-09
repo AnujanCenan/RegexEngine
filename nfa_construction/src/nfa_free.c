@@ -10,7 +10,7 @@ void nfa_free(NFA* nfa)
     int queue_ptr = 0;
     while (queue_ptr < q->size)
     {
-        Node* curr = q->data[queue_ptr++];
+        NFA_Node* curr = q->data[queue_ptr++];
         for (int i = 0; i < curr->edges->size; ++i)
         {
             int neigh_id = curr->edges->data[i]->neigh->id;
