@@ -4,8 +4,8 @@ struct Zobrist_Element
 {
     Set* set;
     bool tombsone;
+    void* value;
 } ;
-
 
 struct Zobrist
 {
@@ -99,7 +99,7 @@ uint64_t zobrist_hash(Zobrist* zobrist, Set* s)
     return h;
 }
 
-void zobrist_add(Zobrist* zobrist, Set* s)
+void zobrist_add(Zobrist* zobrist, Set* s, void* value)
 {
     uint64_t h = zobrist_hash(zobrist, s);
 
@@ -109,6 +109,7 @@ void zobrist_add(Zobrist* zobrist, Set* s)
     Zobrist_Element* elmt = malloc(sizeof(Zobrist_Element));
     elmt->set = s;
     elmt->tombsone = false;
+    elmt->value = value;
 
     zobrist->ht[index] = elmt;
     zobrist->num_elements++;
@@ -146,6 +147,33 @@ bool zobrist_exists(Zobrist* zobrist, Set* s)
 
     bool result = find_set(zobrist, s, index);
     return result;
+}
+
+void* zobrist_get(Zobrist* zobrist, Set* s)
+{
+    uint64_t h = zobrist_hash(zobrist, s);
+    int index = (int) (h & (zobrist->capacity - 1));
+
+    int num_misses = 0;
+
+    int i = index;
+    for (int count = 0; count < zobrist->capacity; ++count)
+    {
+
+        if (i == zobrist->capacity) i = 0;
+
+        if (zobrist->ht[i] == NULL) return NULL;
+
+        if (!zobrist->ht[i]->tombsone && hash_sets_equal(s, zobrist->ht[i]->set))
+        {
+            return zobrist->ht[i]->value;
+        }
+
+        ++num_misses;
+        ++i;
+    }
+
+    return NULL;
 }
 
 
