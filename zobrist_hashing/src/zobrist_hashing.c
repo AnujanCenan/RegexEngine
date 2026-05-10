@@ -177,14 +177,15 @@ void* zobrist_get(Zobrist* zobrist, Set* s)
 }
 
 
-void zobrist_free(Zobrist* z)
+void zobrist_free(Zobrist* z, bool free_sets)
 {
     free(z->random_key_table);
 
     for (int i = 0; i < z->capacity; ++i)
     {
         if (z->ht[i] == NULL) continue;
-        hash_set_free(z->ht[i]->set);
+        if (free_sets) hash_set_free(z->ht[i]->set);        // Zobrist Not responsible for freeing the hash sets
+        free(z->ht[i]);
     }
 
     free(z->ht);
