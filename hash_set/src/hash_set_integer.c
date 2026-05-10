@@ -1,6 +1,6 @@
 #include "../include/hash_set_integer.h"
 
-Hash_Set* hash_set_resize(Hash_Set* hs);
+void hash_set_resize(Hash_Set** hs);
 int hs_hash(int key);
 void print_iterable(HS_Iterable* iter);     // Debugging function
 
@@ -16,32 +16,29 @@ Hash_Set* hash_set_init()
     return hs;
 }
 
-Hash_Set* hash_set_resize(Hash_Set* hs)
+void hash_set_resize(Hash_Set** hs)
 {
-    if (1.0 * hs->num_elements / hs->total_size < 0.75)
-    {
-        return hs;
-    }
+    if (1.0 * (*hs)->num_elements / (*hs)->total_size < MAX_FULLNESS_CAP) return ;
 
     Hash_Set* hs_new = malloc(sizeof(Hash_Set));
-    hs_new->ht = calloc((hs->total_size << 1), sizeof(HT_Item*));
-    hs_new->total_size = hs->total_size << 1;
-    hs_new->num_elements = hs->num_active;
-    hs_new->num_active = hs->num_active;
+    hs_new->ht = calloc(((*hs)->total_size << 1), sizeof(HT_Item *));
+    hs_new->total_size = (*hs)->total_size << 1;
+    hs_new->num_elements = (*hs)->num_active;
+    hs_new->num_active = (*hs)->num_active;
 
-    // hs->total_size <<= 1;
+    // (*hs)->total_size <<= 1;
 
-    for (int i = 0; i < hs->total_size; ++i)
+    for (int i = 0; i < (*hs)->total_size; ++i)
     {
-        if (hs->ht[i] == NULL) continue;
-        else if (hs->ht[i]->tombstone)
+        if ((*hs)->ht[i] == NULL) continue;
+        else if ((*hs)->ht[i]->tombstone)
         {
-            free(hs->ht[i]);
+            free((*hs)->ht[i]);
         } else
         {
-            int index = (hs->ht[i]->hash) & (hs_new->total_size - 1);
+            int index = ((*hs)->ht[i]->hash) & (hs_new->total_size - 1);
 
-            HT_Item* item = hs->ht[i];
+            HT_Item* item = (*hs)->ht[i];
             for (int count = 0; count < hs_new->total_size; ++count)
             {
                 if (index >= hs_new->total_size) index = 0;
@@ -55,10 +52,12 @@ Hash_Set* hash_set_resize(Hash_Set* hs)
         }
     }
 
-    free(hs->ht);
-    free(hs);
+    free((*hs)->ht);
+    free((*hs));
 
-    return hs_new;
+    *hs = hs_new;
+
+    return;
 }
 
 int hs_hash(int key)
@@ -71,7 +70,7 @@ void hash_set_add(Hash_Set** hs, int key)
     // Check for existence of this key
     if (1.0 * (*hs)->num_elements / (*hs)->total_size >= MAX_FULLNESS_CAP)
     {
-        (*hs) = hash_set_resize((*hs));
+        hash_set_resize(hs);
     }
 
     int hash = hs_hash(key);
@@ -97,11 +96,7 @@ void hash_set_add(Hash_Set** hs, int key)
         ++index;
     }
 
-    if (already_exists)
-    {
-        printf("Item %d already exists\n", key);
-        return;
-    } 
+    if (already_exists) return;
 
     HT_Item* item = malloc(sizeof(HT_Item));
     item->tombstone = false;
@@ -170,7 +165,6 @@ void hash_set_delete(Hash_Set* hs, int key)
 bool hash_sets_equal(Hash_Set* hs1, Hash_Set* hs2)
 {
     HS_Iterable* iter1 = hash_set_get_iterable(hs1);
-
     HS_Iterable* iter2 = hash_set_get_iterable(hs2);
 
     if (iter1->size != iter2->size) return false;
@@ -180,6 +174,9 @@ bool hash_sets_equal(Hash_Set* hs1, Hash_Set* hs2)
         if (!hash_set_exists(hs2, iter1->iterable[i])) return false;
         if (!hash_set_exists(hs1, iter2->iterable[i])) return false;
     }
+
+    hash_set_iterable_free(iter1);
+    hash_set_iterable_free(iter2);
 
     return true;
 }
@@ -199,7 +196,14 @@ HS_Iterable* hash_set_get_iterable(Hash_Set* hs)
     }
 
     return iter;
+}
 
+// For debugging only
+void hash_set_print(Hash_Set* hs)
+{
+    HS_Iterable* iter = hash_set_get_iterable(hs);
+    print_iterable(iter);
+    hash_set_iterable_free(iter);
 }
 
 void print_iterable(HS_Iterable* iter)
