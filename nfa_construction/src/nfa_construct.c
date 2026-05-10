@@ -6,7 +6,7 @@ NFA* translate_star_expr(Star_Expr* star, int* num_nodes);
 NFA* translate_simple_expr(Simple_Expr* simple, int* num_nodes);
 
 
-void create_edge(Node* from_node, Node* to_node, char* spelling)
+void create_edge(NFA_Node* from_node, NFA_Node* to_node, char* spelling)
 {
     Edge* edge = malloc(sizeof(Edge));
     edge->neigh = to_node;
@@ -22,9 +22,9 @@ void create_edge(Node* from_node, Node* to_node, char* spelling)
     Edges_append(from_node->edges, edge);
 }
 
-Node* create_node(int* num_nodes)
+NFA_Node* create_node(int* num_nodes)
 {
-    Node* node = malloc(sizeof(Node));
+    NFA_Node* node = malloc(sizeof(NFA_Node));
     node->id = *num_nodes;
     *num_nodes += 1;
     node->edges = Edges_init(NUM_EDGES_PER_NODE);
@@ -102,7 +102,7 @@ NFA* translate_sub_expr(Sub_Expr* sub, int* num_nodes)
         base->initial = star_translate->initial;
         base->terminal = child_sub_translate->terminal;
 
-        Node* merge = create_node(num_nodes);
+        NFA_Node* merge = create_node(num_nodes);
 
         create_edge(star_translate->terminal, merge, NULL);
         create_edge(merge, child_sub_translate->initial, NULL);

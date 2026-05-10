@@ -1,0 +1,1 @@
+clang -g -fsanitize=undefined -I./include -I../parsing_v2/include -I../nfa_construction/include -I../dynamic_array -I../hash_set/include -I../zobrist_hashing/include ../nfa_construction/src/*.c ../hash_set/src/*.c ../zobrist_hashing/src/zobrist_hashing.c ./src/*.c ../parsing_v2/src/*.c main.c

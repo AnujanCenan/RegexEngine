@@ -34,9 +34,9 @@ int main()
     hash_set_add(&s3, 350);
 
     Zobrist* z = zobrist_init(350);
-    zobrist_add(z, s1);
-    zobrist_add(z, s2);
-    zobrist_add(z, s3);
+    zobrist_add(z, s1, NULL);
+    zobrist_add(z, s2, NULL);
+    zobrist_add(z, s3, NULL);
 
     zobrist_exists(z, s1)  ? printf("Found\n") : printf("Not Found\n");      // Found!
     zobrist_exists(z, s2)  ? printf("Found\n") : printf("Not Found\n");      // Found!
@@ -67,7 +67,7 @@ int main()
 
     printf("Num elmts in zobrist = %d\n", get_num_elements(z));
 
-    zobrist_free(z);
+    zobrist_free(z, true);
 
     return 0;
 }

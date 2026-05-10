@@ -6,20 +6,20 @@
 
 #define NUM_EDGES_PER_NODE 4
 
-typedef struct Node Node;
+typedef struct NFA_Node NFA_Node;
 typedef struct Edge Edge;
 typedef struct NFA NFA;
 
 DECLARE_DYNAMIC_ARRAY(Edge*, Edges);
-DECLARE_DYNAMIC_ARRAY(Node*, Node_Queue);
+DECLARE_DYNAMIC_ARRAY(NFA_Node*, Node_Queue);
 
 struct Edge
 {
-    Node* neigh;
+    NFA_Node* neigh;
     char* spelling;
 };
 
-struct Node
+struct NFA_Node
 {
     Edges* edges;
     int id;    
@@ -27,8 +27,8 @@ struct Node
 
 struct NFA
 {
-    Node* initial;
-    Node* terminal;
+    NFA_Node* initial;
+    NFA_Node* terminal;
     int size;
 };
 
