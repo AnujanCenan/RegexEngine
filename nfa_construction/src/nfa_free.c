@@ -20,8 +20,6 @@ void nfa_free(NFA* nfa)
                 Node_Queue_append(q, curr->edges->data[i]->neigh);
             }
 
-            // verbosity -- to help with knowing if the graph is correct
-            printf("Edge from %d to %d with spelling %s\n", curr->id, neigh_id, curr->edges->data[i]->spelling);
             free(curr->edges->data[i]->spelling);
             free(curr->edges->data[i]);
         }

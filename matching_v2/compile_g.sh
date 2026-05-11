@@ -1,0 +1,1 @@
+clang -g -I../dfa_construction/include -I../parsing_v2/include -I../nfa_construction/include -I../dynamic_array -I../hash_set/include -I../zobrist_hashing/include ../dfa_construction/src/*.c ../nfa_construction/src/*.c ../hash_set/src/*.c ../zobrist_hashing/src/zobrist_hashing.c ../parsing_v2/src/*.c ./matching_v2.c

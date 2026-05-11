@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.15)
+project(regex_engine C)
+
+# Include directories
+include_directories(
+    matching_v2/include
+    dfa_construction/include
+    parsing_v2/include
+    nfa_construction/include
+    dynamic_array
+    hash_set/include
+    zobrist_hashing/include
+)
+
+# Source files
+file(GLOB DFA_SOURCES        "dfa_construction/src/*.c")
+file(GLOB NFA_SOURCES        "nfa_construction/src/*.c")
+file(GLOB HASH_SET_SOURCES   "hash_set/src/*.c")
+file(GLOB ZOBRIST_SOURCES    "zobrist_hashing/src/*.c")
+file(GLOB PARSING_SOURCES    "parsing_v2/src/*.c")
+file(GLOB MATCHING_SOURCES   "matching_v2/src/*.c")
+
+
+# Executable
+add_executable(${PROJECT_NAME}
+    ${DFA_SOURCES}
+    ${NFA_SOURCES}
+    ${HASH_SET_SOURCES}
+    ${ZOBRIST_SOURCES}
+    ${PARSING_SOURCES}
+    ${MATCHING_SOURCES}
+    main.c
+)
